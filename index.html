@@ -15,19 +15,19 @@
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css"
           integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
 
-    <link href="https://fonts.googleapis.com/css2?family=M+PLUS+1p:wght@100&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=M+PLUS+Rounded+1c:wght@300;400&display=swap" rel="stylesheet">
 </head>
 
 <body>
 <div class="container">
 
-    <div class="header">
+    <div class="headerText">
         <div class="d-inline-block w-100">
-            <h1><b>CHAD</b></h1>
-            <h4 style="text-align: right"><b>Written by <a href="https://www.matte.fyi">Matthew Treadwell</a></b></h4>
+            <h1 class="headerText"><b>CHAD</b></h1>
+            <h4 class="headerText" style="text-align: right"><b>Written by <a href="https://www.matte.fyi">Matthew Treadwell</a></b></h4>
 
         </div>
-        <h3>A self-hosted, bare metal HPC and Kubernetes cluster</h3>
+        <h3 class="headerText">A self-hosted, bare metal HPC and Kubernetes cluster</h3>
     </div>
 
     <div id="main">
@@ -36,7 +36,11 @@
             This project originally grew from the single dedicated web server I hosted in my closet.
         </p>
 
-        <h2 class="header"><b>Motivation</b></h2>
+        <div class="text-center">
+            <img src="img/serverCloset.jpg" alt="Picture of server closet" class="img-fluid rounded mx-auto" style="max-height: 500px">
+        </div>
+
+        <h2 class="headerText">Motivation</h2>
         <p>
             Over 5 years ago, I started using Linux and hosting public-facing services from my desktop; mainly, game servers for me and my friends.
             A couple years later, I repurposed an old desktop as a dedicated machine for my services.
@@ -49,17 +53,12 @@
             Following this approach would allow for my services to scale while also remaining budget friendly.
         </p>
 
-        <h2 class="header"><b>Design</b></h2>
-        <p>
-            CHAD is designed to utilize the existing compute resources I had laying around my apartment while also improving on reliability.
-            While CHAD is not fully resistant to power outages and internet outages, it can tolerate failures on a couple nodes thanks to kubernetes and load balancing.
-        </p>
-
+        <h2 class="headerText">Hardware</h2>
         <p>
             The cluster's nodes are divided into the following two groups:
         </p>
 
-        <h4 class="header"><b>Infrastructure Nodes</b></h4>
+        <h4 class="headerText">Infrastructure Nodes</h4>
         <p>Low-power and low performance. Supports the main compute nodes with networking and a high-availability k8s control plane.</p>
         <ul>
             <li>Salieri - Thinkpad X250</li>
@@ -72,14 +71,9 @@
                 <li>Cortex-A53 4c/4t</li>
                 <li>2gb ram</li>
             </ul>
-            <li>Miso - Raspberry Pi 3b</li>
-            <ul>
-                <li>Broadcom BCM2837 4c/4t</li>
-                <li>1gb ram</li>
-            </ul>
         </ul>
-        <p>^^ Notice how each node could put on a cheap UPS or effectively has one built in.</p>
-        <h4 class="header"><b>Compute Nodes</b></h4>
+        <p>Originally, a Raspberry Pi 3 as part of the control plane, but I removed it due to out-of-memory crashes.</p>
+        <h4 class="headerText">Compute Nodes</h4>
         <p>High-power and fast single/multi core speeds. Runs production services.</p>
         <ul>
             <li>Amadeus - Headless Dedicated Machine</li>
@@ -103,9 +97,22 @@
             This works out to a total of 20 cores, 36 threads, and 64GB of memory for compute resources, which is a huge improvement from the single dedicated machine.
         </p>
 
-        <h2 class="header"><b>Networking</b></h2>
+        <h2 class="headerText">Design</h2>
+        <div class="text-center">
+            <img src="img/chadDiagram.png" alt="Picture of server closet" class="img-fluid" style="max-height: 500px">
+        </div>
+
+        To put it simply, CHAD is stacked.
+        I say stacked because high-availability load balancing is performed on the infrastructure nodes themselves (inside kubernetes).
+        This design avoids the need to mess with dedicated load balancers and keeps everything simple to setup.
+        In the event that Salieri goes down, Kuro functions as a simple backup.
+        Otherwise, control plane requests are split evenly between Kuro and Salieri.
+
+
+
+        <h2 class="headerText">Networking</h2>
         <p>
-            For security purposes, I won't describe any network configurations.
+            For security purposes, I won't describe any specific network configurations.
             However, here is a list of the hardware I use for the cluster:
         </p>
 
@@ -120,11 +127,18 @@
             Latency is <1ms between all nodes.
         </p>
 
-        <h2 class="header"><b>Services</b></h2>
+        <h2 class="headerText">Services</h2>
         <p>
             CHAD runs a multitude of Open Source software and game servers, both publicly and privately.
-            
+            I'm currently migrating services off Amadeus and into the cluster.
         </p>
+        <ul>
+            <li><b>Metallb</b> - Bare metal load balancing for Kubernetes</li>
+            <li><b>Traefik</b> - Kubernetes Ingress controller</li>
+            <li><b>Jellyfin</b> - Media streaming</li>
+            <li><b>Minecraft</b> - Public PaperMC server</li>
+            <li><b>Syncthing</b> - P2P distributed file synchronization</li>
+        </ul>
 
     </div>
 </div>
