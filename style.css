@@ -1,19 +1,22 @@
 body {
     background-color: #eeeeee !important;
-    font-family: 'Inter', sans-serif;
+    font-family: -apple-system, BlinkMacSystemFont, 'Inter', sans-serif;
     max-font-size: 1vw;
     font-size: 1.3rem;
     line-height: 1.4;
 }
 
-#document {
+p,li {
     font-family: 'Spectral', serif;
+}
+
+
+#document {
     padding-bottom: 20rem;
     overflow-wrap: break-word;
 }
 
 .sectionText {
-    font-family: 'Inter', sans-serif;
     font-weight: bold;
     padding-bottom: 0.5rem;
     padding-top: 0.5rem;
@@ -29,14 +32,6 @@ body {
 
 .title {
     font-size: 3rem;
-}
-
-.subheading {
-    font-family: 'Inter', sans-serif;
-}
-
-h1, h2, h3 , h4, h5 {
-    font-family: 'Inter', sans-serif;
 }
 
 img {
